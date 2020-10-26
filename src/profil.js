@@ -9,17 +9,20 @@ export class profil extends Component {
             nav: navigation,
             user: [],
             record: [],
-            amalan: []
         }
     }
 
     componentDidMount() {
         this.fetchData();
         this.fetchData2();
-        this.fetchData3();
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
+        this.fetchData2();
+    }
+
+    componentWillUnmount() {
+        this.fetchData();
         this.fetchData2();
     }
 
@@ -34,30 +37,43 @@ export class profil extends Component {
         const json = await response.json();
         this.setState({ record: json });
     };
-    fetchData3 = async () => {
-        const response = await fetch(`https://harianku-13r18.firebaseio.com/amalan.json`);
-        const json = await response.json();
-        this.setState({ amalan: json });
-    };
 
     static contextType = RootContext
 
     render() {
 
-        let list = []
+        let amal = []
+        let tanggal = []
+        let frekuensi = []
+        let satuan = []
+
+        let img
+
+        if( this.state.user.gender == "Pria" ){
+            img = require('./images/ikhwan.png')
+        }
+
+        else if( this.state.user.gender == "Wanita" ){
+            img = require('./images/akhwat.png')
+        }
+
+        else{
+            img = require('./images/ava.png')
+        }
 
         for(let i = 0; i < this.state.record.length; i++){
             if( this.state.record[i].userid == this.context.user ){
-                let x = this.state.record[i].amalid
-                list.push(
-                    <View key={i} style={styles.box4}>
-                        <Text style={styles.text2}> {this.state.amalan[x].nama} </Text>
-                        <Text style={styles.text2}> {this.state.record[i].tanggal} </Text>
-                        <View style={styles.box5}>
-                            <Text style={styles.text2}>{this.state.record[i].frekuensi}</Text>
-                            <Text style={styles.text2}>{this.state.record[i].satuan}</Text>
-                        </View>
-                    </View>
+                amal.push(
+                    <Text style={styles.text2}> {this.state.record[i].amalid} </Text>
+                )
+                tanggal.push(
+                    <Text style={styles.text2}> {this.state.record[i].tanggal} </Text>
+                )
+                frekuensi.push(
+                    <Text style={styles.text2}>{this.state.record[i].frekuensi}</Text>
+                )
+                satuan.push(
+                    <Text style={styles.text2}>{this.state.record[i].satuan}</Text>
                 )
             }
         }
@@ -75,23 +91,36 @@ export class profil extends Component {
                             <Text style={styles.title}>Assalaamu'alaikum</Text>
                             <Text style={styles.name}>{this.state.user.nama}</Text>
                         </View>
-                        <Image source={require('./images/ava.png')}/>
+                        <Image style={{ width:70, height:70 }} source={img}/>
                     </View>
                 </View>
 
                 <View style={styles.body}>
+                    <ScrollView horizontal={true}>
                     <View style={styles.box3}>
                         <Text style={styles.text}>Riwayat amalan:</Text>
                         <View style={styles.box4}>
-                            <Text style={styles.text2}>Nama Amalan</Text>
-                            <Text style={styles.text2}>Tanggal</Text>
+                            <View style={styles.box5}>
+                                <Text style={styles.text2}>Nama Amalan</Text>
+                                {amal}
+                            </View>
+                            <View style={styles.box5}>
+                                <Text style={styles.text2}>Tanggal</Text>
+                                {tanggal}
+                            </View>
                             <View style={styles.box5}>
                                 <Text style={styles.text2}>Frekuensi</Text>
+                                <View style={{alignItems: 'flex-end'}}>
+                                {frekuensi}
+                                </View>
+                            </View>
+                            <View style={styles.box5}>
                                 <Text style={styles.text2}>Satuan</Text>
+                                {satuan}
                             </View>
                         </View>
-                        {list}
                     </View>
+                    </ScrollView>
                 </View>
             </ScrollView>
         )
@@ -157,9 +186,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     box5: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 140
+        marginRight: 20
     },
     text2: {
         fontFamily: 'Montserrat',

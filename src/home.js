@@ -43,7 +43,7 @@ export class home extends Component {
             nav: navigation,
             hijriah: [],
             monthHijriah: [],
-            amalan: [],
+            amalan: []
         }
     }
 
@@ -56,6 +56,11 @@ export class home extends Component {
 
     componentDidUpdate() {
        this.fetchData2()
+    }
+
+    componentWillUnmount() {
+        this.fetchData();
+        this.fetchData2();
     }
     
       fetchData = async () => {
@@ -81,7 +86,7 @@ export class home extends Component {
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.title}>{namaHari}</Text>
-                    <Text style={styles.sub1}>{`${this.state.hijriah.day} ${this.state.monthHijriah.en} ${this.state.hijriah.year}`}</Text>
+                    <Text style={styles.sub1}>{ this.state.hijriah.day } { this.state.monthHijriah.en } { this.state.hijriah.year }</Text>
                     <Text style={styles.sub2}>{`${date} ${namaBulan} ${year}`}</Text>
                 </View>
 

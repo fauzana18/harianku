@@ -81,7 +81,7 @@ export class detail extends Component {
 
     store = () => {
         if(this.state.sat!='' && this.state.frekuensi!=''){
-            this.patchData(this.context.user, this.state.route, this.state.frekuensi, this.state.sat, tanggal);
+            this.patchData(this.context.user, this.state.amalan.nama, this.state.frekuensi, this.state.sat, tanggal);
             this.state.nav.pop();
         }
     }
