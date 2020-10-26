@@ -64,7 +64,7 @@ export class home extends Component {
     }
     
       fetchData = async () => {
-        const response = await fetch(`http://api.aladhan.com/v1/gToH?date=${date}-${month}-${year}`);
+        const response = await fetch(`https://api.aladhan.com/v1/gToH?date=${date}-${month}-${year}`);
         const json = await response.json();
         this.setState({ hijriah: json.data.hijri });
         this.setState({ monthHijriah: json.data.hijri.month})
